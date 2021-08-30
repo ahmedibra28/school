@@ -39,7 +39,7 @@ handler.get(async (req, res) => {
 handler.post(async (req, res) => {
   await dbConnect()
 
-  const { name, email, password, group } = req.body
+  const { name, email, password, group, teacher, student, branch } = req.body
   const userExist = await User.findOne({ email })
   if (userExist) {
     return res.status(400).send('User already exist')
@@ -50,6 +50,9 @@ handler.post(async (req, res) => {
     email,
     password,
     group,
+    branch,
+    teacher: teacher && teacher,
+    student: student && student,
   })
 
   if (userCreate) {
@@ -58,6 +61,9 @@ handler.post(async (req, res) => {
       name: userCreate.name,
       email: userCreate.email,
       group: userCreate.group,
+      teacher: userCreate.teacher,
+      student: userCreate.student,
+      branch: userCreate.branch,
       token: generateToken(userCreate._id),
     })
   } else {

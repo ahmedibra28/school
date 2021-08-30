@@ -24,7 +24,6 @@ const userScheme = mongoose.Schema(
     branch: {
       type: mongoose.Schema.Types.ObjectId,
       ref: Branch,
-      required: true,
     },
   },
   { timestamps: true }
