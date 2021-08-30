@@ -1,10 +1,10 @@
 import nc from 'next-connect'
 import dbConnect from '../../../../utils/db'
 import Student from '../../../../models/Student'
-import { isAdmin, isAuth } from '../../../../utils/auth'
+import { isAuth } from '../../../../utils/auth'
 
 const handler = nc()
-handler.use(isAuth, isAdmin)
+handler.use(isAuth)
 
 handler.put(async (req, res) => {
   await dbConnect()
