@@ -4,6 +4,7 @@ import Subject from './Subject'
 const classScheme = mongoose.Schema(
   {
     name: { type: String, required: true },
+    tuitionFee: { type: Number, required: true },
     isActive: { type: Boolean, default: true },
     subject: [
       {
