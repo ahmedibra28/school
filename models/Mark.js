@@ -3,6 +3,7 @@ import Subject from './Subject'
 import P12School from './P12School'
 import Student from './Student'
 import Exam from './Exam'
+import Class from './Class'
 
 const markScheme = mongoose.Schema(
   {
@@ -24,6 +25,7 @@ const markScheme = mongoose.Schema(
       required: true,
     },
     exam: { type: mongoose.Schema.Types.ObjectId, ref: Exam, required: true },
+    class: { type: mongoose.Schema.Types.ObjectId, ref: Class, required: true },
   },
   { timestamps: true }
 )

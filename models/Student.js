@@ -9,13 +9,11 @@ const studentScheme = mongoose.Schema(
     address: { type: String, required: true },
     gender: { type: String, required: true },
     isActive: { type: Boolean, default: true },
-    class: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: Class,
-        required: true,
-      },
-    ],
+    class: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: Class,
+      required: true,
+    },
   },
   { timestamps: true }
 )
