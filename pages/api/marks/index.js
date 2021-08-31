@@ -12,7 +12,8 @@ handler.get(async (req, res) => {
   const obj = await Mark.find({})
     .sort({ createdAt: -1 })
     .populate('p12school')
-    .populate('exam')
+    .populate('student')
+    .populate('subject')
 
   res.send(obj)
 })

@@ -11,8 +11,8 @@ handler.get(async (req, res) => {
 
   const obj = await TuitionFee.find({})
     .sort({ createdAt: -1 })
-    .populate('p12school')
-    .populate('exam')
+    .populate('student')
+    .populate('class')
 
   res.send(obj)
 })
