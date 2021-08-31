@@ -36,6 +36,72 @@ export const routes = () => {
       path: '/profile',
       name: 'Profile',
     },
+    {
+      isActive: true,
+      menu: 'Admin',
+      path: '/admin/branch',
+      name: 'Branch',
+    },
+    {
+      isActive: true,
+      menu: 'Admin',
+      path: '/admin/p12school',
+      name: 'P12 School',
+    },
+    {
+      isActive: true,
+      menu: 'Admin',
+      path: '/admin/subject',
+      name: 'Subject',
+    },
+    {
+      isActive: true,
+      menu: 'Admin',
+      path: '/admin/classroom',
+      name: 'Classroom',
+    },
+    {
+      isActive: true,
+      menu: 'Normal',
+      path: '/teacher',
+      name: 'Teacher',
+    },
+    {
+      isActive: true,
+      menu: 'Normal',
+      path: '/student',
+      name: 'Student',
+    },
+    {
+      isActive: true,
+      menu: 'Admin',
+      path: '/admin/exam',
+      name: 'Exam',
+    },
+    {
+      isActive: true,
+      menu: 'Normal',
+      path: '/mark',
+      name: 'Mark',
+    },
+    {
+      isActive: true,
+      menu: 'Normal',
+      path: '/tuitionfee',
+      name: 'Tuition Fee',
+    },
+    {
+      isActive: true,
+      menu: 'Normal',
+      path: '/attendance',
+      name: 'Attendance',
+    },
+    {
+      isActive: true,
+      menu: 'Normal',
+      path: '/document',
+      name: 'Document',
+    },
   ]
 }
 

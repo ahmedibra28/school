@@ -56,14 +56,15 @@ const Navigation = () => {
   const authItems = () => {
     return (
       <>
-        <ul className='navbar-nav me-auto'>
+        <ul className='navbar-nav ms-auto'>
           {customLocalStorage() &&
             customLocalStorage().userAccessRoutes &&
             customLocalStorage().userAccessRoutes.route &&
             customLocalStorage().userAccessRoutes.route.map(
               (route) =>
                 route.isActive &&
-                route.menu === 'Normal' && (
+                route.menu === 'Normal' &&
+                route.name !== 'Home' && (
                   <li key={route._id} className='nav-item'>
                     <Link href={route.path}>
                       <a className='nav-link active' aria-current='page'>
