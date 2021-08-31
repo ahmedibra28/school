@@ -9,7 +9,9 @@ handler.use(isAuth)
 handler.get(async (req, res) => {
   await dbConnect()
 
-  const obj = await Student.find({}).sort({ createdAt: -1 }).populate('class')
+  const obj = await Student.find({})
+    .sort({ createdAt: -1 })
+    .populate('classRoom')
 
   res.send(obj)
 })
@@ -17,7 +19,7 @@ handler.get(async (req, res) => {
 handler.post(async (req, res) => {
   await dbConnect()
 
-  const { isActive, className, mobile, address, gender } = req.body
+  const { isActive, classRoom, mobile, address, gender } = req.body
   const name = req.body.name.toLowerCase()
 
   const exist = await Student.findOne({ name, mobile })
@@ -26,7 +28,7 @@ handler.post(async (req, res) => {
   }
   const createObj = await Student.create({
     name,
-    class: className,
+    classRoom,
     isActive,
     rollNo: `STD${(await Student.countDocuments()) + 1}`,
     mobile,

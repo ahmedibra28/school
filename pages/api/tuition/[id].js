@@ -9,7 +9,7 @@ handler.use(isAuth)
 handler.put(async (req, res) => {
   await dbConnect()
 
-  const { isActive, fee, className, paymentDate, student } = req.body
+  const { isActive, fee, classRoom, paymentDate, student } = req.body
   const _id = req.query.id
 
   const obj = await TuitionFee.findById(_id)
@@ -18,12 +18,12 @@ handler.put(async (req, res) => {
     const exist = await TuitionFee.find({
       _id: { $ne: _id },
       paymentDate,
-      className,
+      classRoom,
       student,
     })
     if (exist.length === 0) {
       obj.fee = fee
-      obj.class = className
+      obj.classRoom = classRoom
       obj.paymentDate = paymentDate
       obj.student = student
       obj.isActive = isActive

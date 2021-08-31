@@ -9,7 +9,7 @@ handler.use(isAuth)
 handler.put(async (req, res) => {
   await dbConnect()
 
-  const { isActive, className, subject, student } = req.body
+  const { isActive, classRoom, subject, student } = req.body
   const _id = req.query.id
 
   const obj = await Attendance.findById(_id)
@@ -17,13 +17,13 @@ handler.put(async (req, res) => {
   if (obj) {
     const exist = await Attendance.find({
       _id: { $ne: _id },
-      className,
+      classRoom,
       subject,
       student,
       createdAt: Date.now(),
     })
     if (exist.length === 0) {
-      obj.class = className
+      obj.classRoom = classRoom
       obj.subject = subject
       obj.student = student
       obj.isActive = isActive

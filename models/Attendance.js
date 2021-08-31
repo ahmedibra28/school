@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import Subject from './Subject'
-import Class from './Class'
+import ClassRoom from './ClassRoom'
 import Student from './Student'
 
 const attendanceScheme = mongoose.Schema(
@@ -15,7 +15,11 @@ const attendanceScheme = mongoose.Schema(
         },
       },
     ],
-    class: { type: mongoose.Schema.Types.ObjectId, ref: Class, required: true },
+    class: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: ClassRoom,
+      required: true,
+    },
     student: {
       type: mongoose.Schema.Types.ObjectId,
       ref: Student,

@@ -19,10 +19,10 @@ handler.get(async (req, res) => {
 handler.post(async (req, res) => {
   await dbConnect()
 
-  const { isActive, className, subject, student } = req.body
+  const { isActive, classRoom, subject, student } = req.body
 
   const exist = await Attendance.findOne({
-    className,
+    classRoom,
     subject,
     student,
     createdAt: Date.now(),
@@ -32,7 +32,7 @@ handler.post(async (req, res) => {
   }
   const createObj = await Attendance.create({
     isActive,
-    className,
+    classRoom,
     subject,
     student,
   })

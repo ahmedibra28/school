@@ -1,6 +1,6 @@
 import nc from 'next-connect'
 import dbConnect from '../../../../utils/db'
-import Class from '../../../../models/Class'
+import ClassRoom from '../../../../models/ClassRoom'
 import { isAdmin, isAuth } from '../../../../utils/auth'
 
 const handler = nc()
@@ -9,7 +9,7 @@ handler.use(isAuth)
 handler.get(async (req, res) => {
   await dbConnect()
 
-  const obj = await Class.find({})
+  const obj = await ClassRoom.find({})
     .sort({ createdAt: -1 })
     .populate('p12school')
     .populate('subject')
@@ -24,11 +24,11 @@ handler.post(async (req, res) => {
   const { isActive, p12school, subject, tuitionFee } = req.body
   const name = req.body.name.toLowerCase()
 
-  const exist = await Class.findOne({ name, p12school })
+  const exist = await ClassRoom.findOne({ name, p12school })
   if (exist) {
-    return res.status(400).send('Class already exist')
+    return res.status(400).send('Classroom already exist')
   }
-  const createObj = await Class.create({
+  const createObj = await ClassRoom.create({
     name,
     subject,
     p12school,

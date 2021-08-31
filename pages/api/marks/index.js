@@ -21,13 +21,13 @@ handler.get(async (req, res) => {
 handler.post(async (req, res) => {
   await dbConnect()
 
-  const { isActive, p12school, exam, className, subject, student, mark } =
+  const { isActive, p12school, exam, classRoom, subject, student, mark } =
     req.body
 
   const exist = await Mark.findOne({
     exam,
     p12school,
-    className,
+    classRoom,
     subject,
     student,
   })
@@ -38,7 +38,7 @@ handler.post(async (req, res) => {
     exam,
     p12school,
     isActive,
-    className,
+    classRoom,
     subject,
     student,
     mark,

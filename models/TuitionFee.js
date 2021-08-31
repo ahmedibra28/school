@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import Class from './Class'
+import ClassRoom from './ClassRoom'
 import Student from './Student'
 
 const tuitionFeeScheme = mongoose.Schema(
@@ -7,9 +7,9 @@ const tuitionFeeScheme = mongoose.Schema(
     fee: { type: Number, required: true },
     paymentDate: { type: Date, required: true },
     isActive: { type: Boolean, default: true },
-    class: {
+    classRoom: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: Class,
+      ref: ClassRoom,
       required: true,
     },
     student: {

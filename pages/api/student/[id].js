@@ -9,7 +9,7 @@ handler.use(isAuth)
 handler.put(async (req, res) => {
   await dbConnect()
 
-  const { isActive, className, mobile, address, gender } = req.body
+  const { isActive, classRoom, mobile, address, gender } = req.body
   const name = req.body.name.toLowerCase()
   const _id = req.query.id
 
@@ -19,7 +19,7 @@ handler.put(async (req, res) => {
     const exist = await Student.find({ _id: { $ne: _id }, name, mobile })
     if (exist.length === 0) {
       obj.name = name
-      obj.class = className
+      obj.classRoom = classRoom
       obj.mobile = mobile
       obj.address = address
       obj.gender = gender

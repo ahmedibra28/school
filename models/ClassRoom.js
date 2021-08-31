@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import Subject from './Subject'
 
-const classScheme = mongoose.Schema(
+const classRoomScheme = mongoose.Schema(
   {
     name: { type: String, required: true },
     tuitionFee: { type: Number, required: true },
@@ -19,5 +19,6 @@ const classScheme = mongoose.Schema(
   { timestamps: true }
 )
 
-const Class = mongoose.models.Class || mongoose.model('Class', classScheme)
-export default Class
+const ClassRoom =
+  mongoose.models.ClassRoom || mongoose.model('ClassRoom', classRoomScheme)
+export default ClassRoom

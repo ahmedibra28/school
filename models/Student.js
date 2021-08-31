@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import Class from './Class'
+import ClassRoom from './ClassRoom'
 
 const studentScheme = mongoose.Schema(
   {
@@ -9,9 +9,9 @@ const studentScheme = mongoose.Schema(
     address: { type: String, required: true },
     gender: { type: String, required: true },
     isActive: { type: Boolean, default: true },
-    class: {
+    classRoom: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: Class,
+      ref: ClassRoom,
       required: true,
     },
   },

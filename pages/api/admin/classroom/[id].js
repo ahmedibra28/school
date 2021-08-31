@@ -1,6 +1,6 @@
 import nc from 'next-connect'
 import dbConnect from '../../../../utils/db'
-import Class from '../../../../models/Class'
+import ClassRoom from '../../../../models/ClassRoom'
 import { isAdmin, isAuth } from '../../../../utils/auth'
 
 const handler = nc()
@@ -13,10 +13,10 @@ handler.put(async (req, res) => {
   const name = req.body.name.toLowerCase()
   const _id = req.query.id
 
-  const obj = await Class.findById(_id)
+  const obj = await ClassRoom.findById(_id)
 
   if (obj) {
-    const exist = await Class.find({ _id: { $ne: _id }, name, p12school })
+    const exist = await ClassRoom.find({ _id: { $ne: _id }, name, p12school })
     if (exist.length === 0) {
       obj.name = name
       obj.subject = subject
@@ -27,10 +27,10 @@ handler.put(async (req, res) => {
 
       res.json({ status: 'success' })
     } else {
-      return res.status(400).send(`This ${name} Class already exist`)
+      return res.status(400).send(`This ${name} Classroom already exist`)
     }
   } else {
-    return res.status(404).send('Class not found')
+    return res.status(404).send('Classroom not found')
   }
 })
 
@@ -38,9 +38,9 @@ handler.delete(async (req, res) => {
   await dbConnect()
 
   const _id = req.query.id
-  const obj = await Class.findById(_id)
+  const obj = await ClassRoom.findById(_id)
   if (!obj) {
-    return res.status(404).send('Class not found')
+    return res.status(404).send('Classroom not found')
   } else {
     await obj.remove()
 

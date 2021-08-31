@@ -12,7 +12,7 @@ handler.get(async (req, res) => {
   const obj = await TuitionFee.find({})
     .sort({ createdAt: -1 })
     .populate('student')
-    .populate('class')
+    .populate('classRoom')
 
   res.send(obj)
 })
@@ -20,10 +20,10 @@ handler.get(async (req, res) => {
 handler.post(async (req, res) => {
   await dbConnect()
 
-  const { isActive, fee, className, paymentDate, student } = req.body
+  const { isActive, fee, classRoom, paymentDate, student } = req.body
 
   const exist = await TuitionFee.findOne({
-    className,
+    classRoom,
     paymentDate,
     student,
   })
@@ -33,7 +33,7 @@ handler.post(async (req, res) => {
   const createObj = await TuitionFee.create({
     fee,
     isActive,
-    className,
+    classRoom,
     paymentDate,
     student,
   })
