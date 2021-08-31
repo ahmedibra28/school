@@ -151,7 +151,7 @@ const Navigation = () => {
   }
 
   return (
-    <nav className='navbar navbar-expand-sm navbar-light shadow-lg'>
+    <nav className='navbar navbar-expand-lg navbar-light shadow-lg'>
       <div className='container'>
         <Link href='/'>
           <a className='navbar-brand'>GT.edu.so</a>
