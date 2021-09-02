@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Head from 'next/head'
 import dynamic from 'next/dynamic'
 import withAuth from '../../HOC/withAuth'
 import Message from '../../components/Message'
@@ -131,6 +132,10 @@ const P12School = () => {
 
   return (
     <div className='container'>
+      <Head>
+        <title>P12 School</title>
+        <meta property='og:title' content='P12 School' key='title' />
+      </Head>
       {isSuccessUpdate && (
         <Message variant='success'>
           P12 School has been updated successfully.

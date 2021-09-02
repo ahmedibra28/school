@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Head from 'next/head'
 import dynamic from 'next/dynamic'
 import withAuth from '../../HOC/withAuth'
 import Message from '../../components/Message'
@@ -120,6 +121,10 @@ const Branch = () => {
 
   return (
     <div className='container'>
+      <Head>
+        <title>Branch</title>
+        <meta property='og:title' content='Branch' key='title' />
+      </Head>
       {isSuccessUpdate && (
         <Message variant='success'>
           Branch has been updated successfully.
@@ -259,7 +264,10 @@ const Branch = () => {
                   data.map((branch) => (
                     <tr key={branch._id}>
                       <td>{moment(branch.createdAt).format('llll')}</td>
-                      <td>{branch.name}</td>
+                      <td>
+                        {branch.name.charAt(0).toUpperCase() +
+                          branch.name.slice(1)}
+                      </td>
                       <td>
                         {branch.isActive ? (
                           <FaCheckCircle className='text-success mb-1' />
