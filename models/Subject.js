@@ -1,12 +1,13 @@
 import mongoose from 'mongoose'
 import P12School from './P12School'
 import Exam from './Exam'
+import Branch from './Branch'
 
 const subjectScheme = mongoose.Schema(
   {
     name: { type: String, required: true },
     isActive: { type: Boolean, default: true },
-    exams: [
+    exam: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: Exam,
@@ -16,6 +17,11 @@ const subjectScheme = mongoose.Schema(
     p12school: {
       type: mongoose.Schema.Types.ObjectId,
       ref: P12School,
+      required: true,
+    },
+    branch: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: Branch,
       required: true,
     },
   },

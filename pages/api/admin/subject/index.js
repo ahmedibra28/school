@@ -13,6 +13,7 @@ handler.get(async (req, res) => {
     .sort({ createdAt: -1 })
     .populate('p12school')
     .populate('exam')
+    .populate('branch')
 
   res.send(obj)
 })
@@ -21,10 +22,10 @@ handler.use(isAuth, isAdmin)
 handler.post(async (req, res) => {
   await dbConnect()
 
-  const { isActive, p12school, exam } = req.body
+  const { isActive, p12school, exam, branch } = req.body
   const name = req.body.name.toLowerCase()
 
-  const exist = await Subject.findOne({ name, p12school })
+  const exist = await Subject.findOne({ name, p12school, branch })
   if (exist) {
     return res.status(400).send('Subject already exist')
   }
@@ -32,6 +33,7 @@ handler.post(async (req, res) => {
     name,
     exam,
     p12school,
+    branch,
     isActive,
   })
 

@@ -1,6 +1,6 @@
 import dynamicAPI from './dynamicAPI'
 
-const url = '/api/exam'
+const url = '/api/admin/exam'
 
 export const getExams = async () => await dynamicAPI('get', url, {})
 

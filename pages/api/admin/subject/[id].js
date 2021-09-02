@@ -9,17 +9,24 @@ handler.use(isAuth, isAdmin)
 handler.put(async (req, res) => {
   await dbConnect()
 
-  const { isActive, p12school, exam } = req.body
+  const { isActive, p12school, exam, branch } = req.body
+
   const name = req.body.name.toLowerCase()
   const _id = req.query.id
 
   const obj = await Subject.findById(_id)
 
   if (obj) {
-    const exist = await Subject.find({ _id: { $ne: _id }, name, p12school })
+    const exist = await Subject.find({
+      _id: { $ne: _id },
+      name,
+      p12school,
+      branch,
+    })
     if (exist.length === 0) {
       obj.name = name
       obj.exam = exam
+      obj.branch = branch
       obj.p12school = p12school
       obj.isActive = isActive
       await obj.save()
