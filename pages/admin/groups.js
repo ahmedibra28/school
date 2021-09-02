@@ -58,6 +58,7 @@ const Group = () => {
     retry: 0,
     onSuccess: () => {
       reset()
+      setEdit(false)
       queryClient.invalidateQueries(['groups'])
     },
   })
@@ -83,6 +84,7 @@ const Group = () => {
     retry: 0,
     onSuccess: () => {
       reset()
+      setEdit(false)
       queryClient.invalidateQueries(['groups'])
     },
   })
