@@ -45,7 +45,7 @@ export const routes = () => {
     {
       isActive: true,
       menu: 'Admin',
-      path: '/admin/p12school',
+      path: '/admin/pTwelveSchool',
       name: 'P12 School',
     },
     {

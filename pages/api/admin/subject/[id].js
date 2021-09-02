@@ -9,7 +9,7 @@ handler.use(isAuth, isAdmin)
 handler.put(async (req, res) => {
   await dbConnect()
 
-  const { isActive, p12school, exam, branch } = req.body
+  const { isActive, pTwelveSchool, exam, branch } = req.body
 
   const name = req.body.name.toLowerCase()
   const _id = req.query.id
@@ -20,14 +20,14 @@ handler.put(async (req, res) => {
     const exist = await Subject.find({
       _id: { $ne: _id },
       name,
-      p12school,
+      pTwelveSchool,
       branch,
     })
     if (exist.length === 0) {
       obj.name = name
       obj.exam = exam
       obj.branch = branch
-      obj.p12school = p12school
+      obj.pTwelveSchool = pTwelveSchool
       obj.isActive = isActive
       await obj.save()
 

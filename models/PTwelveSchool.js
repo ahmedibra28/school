@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import Branch from './Branch'
 
-const p12schoolScheme = mongoose.Schema(
+const pTwelveSchoolScheme = mongoose.Schema(
   {
     name: { type: String, required: true },
     isActive: { type: Boolean, default: true },
@@ -14,6 +14,7 @@ const p12schoolScheme = mongoose.Schema(
   { timestamps: true }
 )
 
-const P12School =
-  mongoose.models.P12School || mongoose.model('P12School', p12schoolScheme)
-export default P12School
+const PTwelveSchool =
+  mongoose.models.PTwelveSchool ||
+  mongoose.model('PTwelveSchool', pTwelveSchoolScheme)
+export default PTwelveSchool

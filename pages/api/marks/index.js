@@ -11,7 +11,7 @@ handler.get(async (req, res) => {
 
   const obj = await Mark.find({})
     .sort({ createdAt: -1 })
-    .populate('p12school')
+    .populate('pTwelveSchool')
     .populate('student')
     .populate('subject')
 
@@ -21,12 +21,12 @@ handler.get(async (req, res) => {
 handler.post(async (req, res) => {
   await dbConnect()
 
-  const { isActive, p12school, exam, classRoom, subject, student, mark } =
+  const { isActive, pTwelveSchool, exam, classRoom, subject, student, mark } =
     req.body
 
   const exist = await Mark.findOne({
     exam,
-    p12school,
+    pTwelveSchool,
     classRoom,
     subject,
     student,
@@ -36,7 +36,7 @@ handler.post(async (req, res) => {
   }
   const createObj = await Mark.create({
     exam,
-    p12school,
+    pTwelveSchool,
     isActive,
     classRoom,
     subject,

@@ -14,11 +14,11 @@ import {
 } from 'react-icons/fa'
 
 import {
-  getP12Schools,
-  updateP12School,
-  deleteP12School,
-  addP12School,
-} from '../../api/p12School'
+  getPTwelveSchools,
+  updatePTwelveSchool,
+  deletePTwelveSchool,
+  addPTwelveSchool,
+} from '../../api/pTwelveSchool'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 
 import { confirmAlert } from 'react-confirm-alert'
@@ -31,7 +31,7 @@ import {
   inputText,
 } from '../../utils/dynamicForm'
 
-const P12School = () => {
+const PTwelveSchool = () => {
   const {
     register,
     handleSubmit,
@@ -48,7 +48,7 @@ const P12School = () => {
 
   const { data, isLoading, isError, error } = useQuery(
     'p12Schools',
-    () => getP12Schools(),
+    () => getPTwelveSchools(),
     {
       retry: 0,
     }
@@ -64,7 +64,7 @@ const P12School = () => {
     error: errorUpdate,
     isSuccess: isSuccessUpdate,
     mutateAsync: updateMutateAsync,
-  } = useMutation(updateP12School, {
+  } = useMutation(updatePTwelveSchool, {
     retry: 0,
     onSuccess: () => {
       reset()
@@ -79,7 +79,7 @@ const P12School = () => {
     error: errorDelete,
     isSuccess: isSuccessDelete,
     mutateAsync: deleteMutateAsync,
-  } = useMutation(deleteP12School, {
+  } = useMutation(deletePTwelveSchool, {
     retry: 0,
     onSuccess: () => queryClient.invalidateQueries(['p12Schools']),
   })
@@ -90,7 +90,7 @@ const P12School = () => {
     error: errorAdd,
     isSuccess: isSuccessAdd,
     mutateAsync: addMutateAsync,
-  } = useMutation(addP12School, {
+  } = useMutation(addPTwelveSchool, {
     retry: 0,
     onSuccess: () => {
       reset()
@@ -156,18 +156,18 @@ const P12School = () => {
       {isErrorDelete && <Message variant='danger'>{errorDelete}</Message>}
       <div
         className='modal fade'
-        id='editP12SchoolModal'
+        id='editPTwelveSchoolModal'
         data-bs-backdrop='static'
         data-bs-keyboard='false'
         tabIndex='-1'
-        aria-labelledby='editP12SchoolModalLabel'
+        aria-labelledby='editPTwelveSchoolModalLabel'
         aria-hidden='true'
       >
         <div className='modal-dialog'>
           <div className='modal-content modal-background'>
             <div className='modal-header'>
-              <h3 className='modal-title ' id='editP12SchoolModalLabel'>
-                {edit ? 'Edit P12School' : 'Add P12School'}
+              <h3 className='modal-title ' id='editPTwelveSchoolModalLabel'>
+                {edit ? 'Edit PTwelveSchool' : 'Add PTwelveSchool'}
               </h3>
               <button
                 type='button'
@@ -247,7 +247,7 @@ const P12School = () => {
         <button
           className='btn btn-primary '
           data-bs-toggle='modal'
-          data-bs-target='#editP12SchoolModal'
+          data-bs-target='#editPTwelveSchoolModal'
         >
           <FaPlus className='mb-1' />
         </button>
@@ -274,7 +274,7 @@ const P12School = () => {
                 <tr>
                   <th>DATE & TIME</th>
                   <th>BRANCH</th>
-                  <th>P12 SCHOOL</th>
+                  <th>P Twelve School</th>
                   <th>ACTIVE</th>
                   <th>ACTIONS</th>
                 </tr>
@@ -305,7 +305,7 @@ const P12School = () => {
                           className='btn btn-primary btn-sm'
                           onClick={() => editHandler(p12School)}
                           data-bs-toggle='modal'
-                          data-bs-target='#editP12SchoolModal'
+                          data-bs-target='#editPTwelveSchoolModal'
                         >
                           <FaEdit className='mb-1' /> Edit
                         </button>
@@ -336,6 +336,6 @@ const P12School = () => {
   )
 }
 
-export default dynamic(() => Promise.resolve(withAuth(P12School)), {
+export default dynamic(() => Promise.resolve(withAuth(PTwelveSchool)), {
   ssr: false,
 })

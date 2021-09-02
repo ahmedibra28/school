@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import P12School from './P12School'
+import PTwelveSchool from './PTwelveSchool'
 import Exam from './Exam'
 import Branch from './Branch'
 
@@ -14,9 +14,9 @@ const subjectScheme = mongoose.Schema(
         required: true,
       },
     ],
-    p12school: {
+    pTwelveSchool: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: P12School,
+      ref: PTwelveSchool,
       required: true,
     },
     branch: {

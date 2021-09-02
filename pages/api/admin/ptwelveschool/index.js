@@ -1,6 +1,6 @@
 import nc from 'next-connect'
 import dbConnect from '../../../../utils/db'
-import P12School from '../../../../models/P12School'
+import PTwelveSchool from '../../../../models/PTwelveSchool'
 import { isAdmin, isAuth } from '../../../../utils/auth'
 
 const handler = nc()
@@ -9,7 +9,7 @@ handler.use(isAuth)
 handler.get(async (req, res) => {
   await dbConnect()
 
-  const obj = await P12School.find({})
+  const obj = await PTwelveSchool.find({})
     .sort({ createdAt: -1 })
     .populate('branch')
 
@@ -23,11 +23,11 @@ handler.post(async (req, res) => {
   const { isActive, branch } = req.body
   const name = req.body.name.toLowerCase()
 
-  const exist = await P12School.findOne({ name, branch })
+  const exist = await PTwelveSchool.findOne({ name, branch })
   if (exist) {
-    return res.status(400).send('P12School already exist')
+    return res.status(400).send('PTwelveSchool already exist')
   }
-  const createObj = await P12School.create({
+  const createObj = await PTwelveSchool.create({
     name,
     branch,
     isActive,

@@ -9,7 +9,7 @@ handler.use(isAuth)
 handler.put(async (req, res) => {
   await dbConnect()
 
-  const { isActive, p12school, exam, classRoom, subject, student, mark } =
+  const { isActive, pTwelveSchool, exam, classRoom, subject, student, mark } =
     req.body
   const _id = req.query.id
 
@@ -18,7 +18,7 @@ handler.put(async (req, res) => {
   if (obj) {
     const exist = await Mark.find({
       _id: { $ne: _id },
-      p12school,
+      pTwelveSchool,
       classRoom,
       subject,
       student,
@@ -29,7 +29,7 @@ handler.put(async (req, res) => {
       obj.subject = subject
       obj.student = student
       obj.mark = mark
-      obj.p12school = p12school
+      obj.pTwelveSchool = pTwelveSchool
       obj.isActive = isActive
       await obj.save()
 

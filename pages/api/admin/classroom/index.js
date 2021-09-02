@@ -11,7 +11,7 @@ handler.get(async (req, res) => {
 
   const obj = await ClassRoom.find({})
     .sort({ createdAt: -1 })
-    .populate('p12school')
+    .populate('pTwelveSchool')
     .populate('subject')
 
   res.send(obj)
@@ -21,17 +21,18 @@ handler.use(isAuth, isAdmin)
 handler.post(async (req, res) => {
   await dbConnect()
 
-  const { isActive, p12school, subject, tuitionFee } = req.body
+  const { isActive, pTwelveSchool, branch, subject, tuitionFee } = req.body
   const name = req.body.name.toLowerCase()
 
-  const exist = await ClassRoom.findOne({ name, p12school })
+  const exist = await ClassRoom.findOne({ name, pTwelveSchool, branch })
   if (exist) {
     return res.status(400).send('Classroom already exist')
   }
   const createObj = await ClassRoom.create({
     name,
     subject,
-    p12school,
+    pTwelveSchool,
+    branch,
     tuitionFee,
     isActive,
   })

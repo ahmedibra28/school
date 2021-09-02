@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import Subject from './Subject'
-import P12School from './P12School'
+import PTwelveSchool from './PTwelveSchool'
 import Student from './Student'
 import Exam from './Exam'
 import ClassRoom from './ClassRoom'
@@ -14,9 +14,9 @@ const markScheme = mongoose.Schema(
       ref: Subject,
       required: true,
     },
-    p12school: {
+    pTwelveSchool: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: P12School,
+      ref: PTwelveSchool,
       required: true,
     },
     student: {

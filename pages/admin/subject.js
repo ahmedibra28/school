@@ -4,7 +4,6 @@ import dynamic from 'next/dynamic'
 import withAuth from '../../HOC/withAuth'
 import Message from '../../components/Message'
 import Loader from 'react-loader-spinner'
-import moment from 'moment'
 import {
   FaCheckCircle,
   FaEdit,
@@ -24,7 +23,7 @@ import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { confirmAlert } from 'react-confirm-alert'
 import { Confirm } from '../../components/Confirm'
 import { useForm } from 'react-hook-form'
-import { getP12Schools } from '../../api/p12school'
+import { getPTwelveSchools } from '../../api/pTwelveSchool'
 import { getExams } from '../../api/exam'
 import {
   dynamicInputSelect,
@@ -59,8 +58,8 @@ const Subject = () => {
   )
 
   const { data: p12SchoolDataOrigin } = useQuery(
-    'p12schools',
-    () => getP12Schools(),
+    'pTwelveSchools',
+    () => getPTwelveSchools(),
     {
       retry: 0,
     }
@@ -137,7 +136,7 @@ const Subject = () => {
           _id: id,
           name: data.name,
           exam: data.exam,
-          p12school: data.p12school,
+          pTwelveSchool: data.pTwelveSchool,
           branch: data.branch,
           isActive: data.isActive,
         })
@@ -148,9 +147,9 @@ const Subject = () => {
     setId(subject._id)
     setEdit(true)
     setValue('name', subject.name)
-    setValue('p12school', subject.p12school._id)
     setValue('branch', subject.branch._id)
     setValue('exam', subject.exam && subject.exam.map((id) => id._id))
+    setValue('pTwelveSchool', subject.pTwelveSchool._id)
     setValue('isActive', subject.isActive)
   }
 
@@ -225,13 +224,14 @@ const Subject = () => {
                     data: branchData && branchData,
                   })}
 
-                  {dynamicInputSelect({
-                    register,
-                    label: 'P12 School',
-                    errors,
-                    name: 'p12school',
-                    data: p12SchoolData && p12SchoolData,
-                  })}
+                  {watch().branch &&
+                    dynamicInputSelect({
+                      register,
+                      label: 'P12 School',
+                      errors,
+                      name: 'pTwelveSchool',
+                      data: p12SchoolData && p12SchoolData,
+                    })}
 
                   {inputMultipleCheckBox({
                     register,
@@ -312,7 +312,7 @@ const Subject = () => {
               <thead>
                 <tr>
                   <th>SUBJECT</th>
-                  <th>P12 SCHOOL</th>
+                  <th>P Twelve School</th>
                   <th>EXAMS</th>
                   <th>ACTIVE</th>
                   <th>ACTIONS</th>
@@ -327,8 +327,8 @@ const Subject = () => {
                           subject.name.slice(1)}
                       </td>
                       <td>
-                        {subject.p12school.name.charAt(0).toUpperCase() +
-                          subject.p12school.name.slice(1)}
+                        {subject.pTwelveSchool.name.charAt(0).toUpperCase() +
+                          subject.pTwelveSchool.name.slice(1)}
                       </td>
                       <td>
                         {subject.exam &&
