@@ -57,7 +57,7 @@ const Subject = () => {
     }
   )
 
-  const { data: p12SchoolDataOrigin } = useQuery(
+  const { data: p12SchoolData } = useQuery(
     'pTwelveSchools',
     () => getPTwelveSchools(),
     {
@@ -72,10 +72,6 @@ const Subject = () => {
   const { data: branchData } = useQuery('branches', () => getBranches(), {
     retry: 0,
   })
-
-  const p12SchoolData =
-    p12SchoolDataOrigin &&
-    p12SchoolDataOrigin.filter((p) => p.branch._id === watch().branch)
 
   const {
     isLoading: isLoadingUpdate,
@@ -230,7 +226,11 @@ const Subject = () => {
                       label: 'P12 School',
                       errors,
                       name: 'pTwelveSchool',
-                      data: p12SchoolData && p12SchoolData,
+                      data:
+                        p12SchoolData &&
+                        p12SchoolData.filter(
+                          (p) => p.branch._id === watch().branch
+                        ),
                     })}
 
                   {inputMultipleCheckBox({

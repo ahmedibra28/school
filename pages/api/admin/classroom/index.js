@@ -13,6 +13,7 @@ handler.get(async (req, res) => {
     .sort({ createdAt: -1 })
     .populate('pTwelveSchool')
     .populate('subject')
+    .populate('branch')
 
   res.send(obj)
 })

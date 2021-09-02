@@ -20,11 +20,9 @@ const classRoomScheme = mongoose.Schema(
     },
     subject: [
       {
-        subject: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: Subject,
-          required: true,
-        },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: Subject,
+        required: true,
       },
     ],
   },
