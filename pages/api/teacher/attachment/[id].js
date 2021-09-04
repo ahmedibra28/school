@@ -33,7 +33,7 @@ handler.put(async (req, res) => {
 
   if (obj) {
     if (document) {
-      if (obj && Object.document) {
+      if (obj && obj.document) {
         deleteFile({
           pathName: obj.document.documentPath,
         })
@@ -56,7 +56,7 @@ handler.put(async (req, res) => {
     }
 
     if (profilePicture) {
-      if (obj && Object.profilePicture) {
+      if (obj && obj.profilePicture) {
         deleteFile({
           pathName: obj.profilePicture.imagePath,
         })
