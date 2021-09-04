@@ -52,7 +52,7 @@ handler.post(async (req, res) => {
     if (profile) {
       const createObj = await Teacher.create({
         name,
-        subject,
+        subject: !Array.isArray(subject) && subject.split(','),
         isActive,
         mobile,
         address,
