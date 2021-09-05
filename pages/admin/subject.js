@@ -312,7 +312,8 @@ const Subject = () => {
               <thead>
                 <tr>
                   <th>SUBJECT</th>
-                  <th>P Twelve School</th>
+                  <th>BRANCH</th>
+                  <th>P TWELVE SCHOOL</th>
                   <th>EXAMS</th>
                   <th>ACTIVE</th>
                   <th>ACTIONS</th>
@@ -325,6 +326,10 @@ const Subject = () => {
                       <td>
                         {subject.name.charAt(0).toUpperCase() +
                           subject.name.slice(1)}
+                      </td>
+                      <td>
+                        {subject.branch.name.charAt(0).toUpperCase() +
+                          subject.branch.name.slice(1)}
                       </td>
                       <td>
                         {subject.pTwelveSchool.name.charAt(0).toUpperCase() +

@@ -274,7 +274,7 @@ const PTwelveSchool = () => {
                 <tr>
                   <th>DATE & TIME</th>
                   <th>BRANCH</th>
-                  <th>P Twelve School</th>
+                  <th>P TWELVE SCHOOL</th>
                   <th>ACTIVE</th>
                   <th>ACTIONS</th>
                 </tr>

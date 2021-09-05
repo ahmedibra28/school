@@ -194,7 +194,7 @@ const ClassRoom = () => {
           <div className='modal-content modal-background'>
             <div className='modal-header'>
               <h3 className='modal-title ' id='editClassRoomModalLabel'>
-                {edit ? 'Edit ClassRoom' : 'Add ClassRoom'}
+                {edit ? 'Edit Class Room' : 'Add Class Room'}
               </h3>
               <button
                 type='button'

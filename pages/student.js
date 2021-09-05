@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Head from 'next/head'
 import dynamic from 'next/dynamic'
@@ -51,6 +51,11 @@ const Student = () => {
   })
 
   const queryClient = useQueryClient()
+
+  const [id, setId] = useState(null)
+  const [edit, setEdit] = useState(false)
+  const [file, setFile] = useState('')
+  const [imageDisplay, setImageDisplay] = useState('')
 
   const { data, isLoading, isError, error } = useQuery(
     'students',
@@ -123,10 +128,6 @@ const Student = () => {
     },
   })
 
-  const [id, setId] = useState(null)
-  const [edit, setEdit] = useState(false)
-  const [file, setFile] = useState('')
-
   const formCleanHandler = () => {
     setEdit(false)
     setFile('')
@@ -136,6 +137,14 @@ const Student = () => {
   const deleteHandler = (id) => {
     confirmAlert(Confirm(() => deleteMutateAsync(id)))
   }
+
+  useEffect(() => {
+    const reader = new FileReader()
+    reader.addEventListener('load', () => {
+      setImageDisplay(reader.result)
+    })
+    file && reader.readAsDataURL(file)
+  }, [file])
 
   const submitHandler = (data) => {
     const formData = new FormData()
@@ -168,6 +177,8 @@ const Student = () => {
     setValue('pTwelveSchool', student.pTwelveSchool._id)
     setValue('classRoom', student.classRoom._id)
     setValue('isActive', student.isActive)
+
+    setImageDisplay(student.profilePicture && student.profilePicture.imagePath)
   }
 
   return (
@@ -266,7 +277,7 @@ const Student = () => {
                         data: [{ name: 'Male' }, { name: 'Female' }],
                       })}
                     </div>
-                    <div className='col-12'>
+                    <div className='col-10'>
                       {inputFile({
                         register,
                         errors,
@@ -275,6 +286,18 @@ const Student = () => {
                         setFile,
                         isRequired: false,
                       })}
+                    </div>
+                    <div className='col-2 my-auto pt-3'>
+                      {edit && imageDisplay && (
+                        <Image
+                          width='35'
+                          height='35'
+                          priority
+                          className='img-fluid rounded-pill my-auto'
+                          src={imageDisplay}
+                          alt={imageDisplay}
+                        />
+                      )}
                     </div>
                     <div className='col-md-6 col-12'>
                       {dynamicInputSelect({
@@ -429,7 +452,11 @@ const Student = () => {
                         {student.pTwelveSchool && student.pTwelveSchool.name}
                       </td>
                       <td>{student.mobile}</td>
-                      <td>{student.classRoom && student.classRoom.name}</td>
+                      <td>
+                        <span className='badge bg-primary me-1'>
+                          {student.classRoom && student.classRoom.name}
+                        </span>
+                      </td>
                       <td>
                         {student.isActive ? (
                           <FaCheckCircle className='text-success mb-1' />
