@@ -18,7 +18,7 @@ export const upload = async (args) => {
 
   const fullFileName = fileName && `${fullName}-${Date.now()}.${extension}`
 
-  const filePath = `/public/${pathName}/${fullFileName}`
+  let filePath = `/public/${pathName}/${fullFileName}`
 
   const files = /(\.pdf|\.docx|\.doc)$/i
   const images = /(\.jpg|\.jpeg|\.png|\.gif|\.svg)$/i
@@ -36,7 +36,7 @@ export const upload = async (args) => {
 
     return {
       fullFileName,
-      filePath,
+      filePath: `/${pathName}/${fullFileName}`,
     }
   }
 }
@@ -44,9 +44,11 @@ export const upload = async (args) => {
 export const deleteFile = (args) => {
   const { pathName } = args
 
+  const filePath = `/public/${pathName}`
+
   const destroy =
     pathName &&
-    fs.unlink(path.join(__dirname, pathName), (err) => {
+    fs.unlink(path.join(__dirname, filePath), (err) => {
       if (err) {
         throw new Error(err)
       }

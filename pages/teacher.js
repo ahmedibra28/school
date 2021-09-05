@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Image from 'next/image'
 import Head from 'next/head'
 import dynamic from 'next/dynamic'
 import withAuth from '../HOC/withAuth'
@@ -382,6 +383,7 @@ const Teacher = () => {
               <caption>{data && data.length} records were found</caption>
               <thead>
                 <tr>
+                  <th>IMAGE </th>
                   <th>TEACHER </th>
                   <th>BRANCH</th>
                   <th>P12 SCHOOL</th>
@@ -395,6 +397,24 @@ const Teacher = () => {
                 {data &&
                   data.map((teacher) => (
                     <tr key={teacher._id}>
+                      <td>
+                        {teacher.profilePicture && (
+                          <Image
+                            width='27'
+                            height='27'
+                            priority
+                            className='img-fluid rounded-pill'
+                            src={
+                              teacher.profilePicture &&
+                              teacher.profilePicture.imagePath
+                            }
+                            alt={
+                              teacher.profilePicture &&
+                              teacher.profilePicture.imageName
+                            }
+                          />
+                        )}
+                      </td>
                       <td>
                         {teacher.name.charAt(0).toUpperCase() +
                           teacher.name.slice(1)}
