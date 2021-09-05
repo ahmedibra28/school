@@ -26,21 +26,25 @@ handler.get(async (req, res) => {
 handler.post(async (req, res) => {
   await dbConnect()
 
-  const {
-    isActive,
-    subject,
-    mobile,
-    address,
-    gender,
-    branch,
-    pTwelveSchool,
-    name,
-  } = req.body
+  const { isActive, mobile, address, gender, branch, pTwelveSchool, name } =
+    req.body
   const profilePicture = req.files && req.files.profilePicture
+  const subject =
+    !Array.isArray(req.body.subject) && req.body.subject.split(',')
 
-  const exist = await Teacher.findOne({ mobile, branch, pTwelveSchool })
+  const exist = await Teacher.find({ branch, pTwelveSchool })
   if (exist) {
-    return res.status(400).send('Teacher already exist')
+    if (exist.map((m) => Number(m.mobile)).includes(Number(mobile)))
+      return res.status(400).send(`${mobile} already taken by a teacher`)
+
+    const conceitedSubs = [].concat.apply(
+      [],
+      exist.map((e) => e.subject)
+    )
+
+    if (conceitedSubs.some((sub) => subject.includes(sub.toString()))) {
+      return res.status(400).send('Subject already taken by another teacher')
+    }
   }
   if (profilePicture) {
     const profile = await upload({
@@ -52,7 +56,7 @@ handler.post(async (req, res) => {
     if (profile) {
       const createObj = await Teacher.create({
         name,
-        subject: !Array.isArray(subject) && subject.split(','),
+        subject,
         isActive,
         mobile,
         address,
@@ -74,7 +78,7 @@ handler.post(async (req, res) => {
   } else {
     const createObj = await Teacher.create({
       name,
-      subject: !Array.isArray(subject) && subject.split(','),
+      subject,
       isActive,
       mobile,
       address,
