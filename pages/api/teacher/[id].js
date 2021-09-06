@@ -15,25 +15,19 @@ handler.use(isAuth)
 handler.put(async (req, res) => {
   await dbConnect()
 
-  const { isActive, mobile, address, gender, branch, pTwelveSchool, name } =
-    req.body
+  const { isActive, mobile, address, gender, name } = req.body
   const profilePicture = req.files && req.files.profilePicture
   const _id = req.query.id
-  const subject =
-    !Array.isArray(req.body.subject) && req.body.subject.split(',')
 
   const obj = await Teacher.findById(_id)
 
   if (obj) {
-    const exist = await Teacher.find({ _id: { $ne: _id } })
+    const exist = await Teacher.find({ _id: { $ne: _id }, mobile })
 
-    const conceitedSubs = [].concat.apply(
-      [],
-      exist.map((e) => e.subject)
-    )
-
-    if (conceitedSubs.some((sub) => subject.includes(sub.toString()))) {
-      return res.status(400).send('Subject already taken by another teacher')
+    if (exist.length > 0) {
+      return res
+        .status(400)
+        .send(`${mobile} mobile already taken by another teacher`)
     }
 
     if (profilePicture) {
@@ -49,7 +43,6 @@ handler.put(async (req, res) => {
         pathName: 'teacher',
       })
       obj.name = name
-      obj.subject = subject
       obj.mobile = mobile
       obj.address = address
       obj.gender = gender
@@ -58,19 +51,14 @@ handler.put(async (req, res) => {
         imageName: profile.fullFileName,
         imagePath: profile.filePath,
       }
-      obj.branch = branch
-      obj.pTwelveSchool = pTwelveSchool
       await obj.save()
       res.json({ status: 'success' })
     } else {
       obj.name = name
-      obj.subject = subject
       obj.mobile = mobile
       obj.address = address
       obj.gender = gender
       obj.isActive = isActive
-      obj.pTwelveSchool = pTwelveSchool
-      obj.branch = branch
       await obj.save()
       res.json({ status: 'success' })
     }
