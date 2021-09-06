@@ -11,3 +11,6 @@ export const updateAttendance = async (obj) =>
 
 export const deleteAttendance = async (id) =>
   await dynamicAPI('delete', `${url}/${id}`, {})
+
+export const getFilteredClasses = async (obj) =>
+  await dynamicAPI('post', `${url}/filter-classes`, obj)

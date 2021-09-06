@@ -116,7 +116,7 @@ export const dynamicInputSelect = (args) => {
         <option value=''>-------</option>
         {data &&
           data.map((d) => (
-            <option key={d._id} value={d._id}>
+            <option key={d._id} value={name === 'group' ? d.name : d._id}>
               {d.name}
             </option>
           ))}
@@ -251,6 +251,40 @@ export const inputDate = (args) => {
         placeholder={`Enter ${name}`}
         className='form-control'
       />
+      {errors && errors[name] && (
+        <span className='text-danger'>{errors[name].message}</span>
+      )}
+    </div>
+  )
+}
+
+export const InputAutoCompleteSelect = (args) => {
+  const { register, errors, name, data, label, isRequired = true } = args
+
+  return (
+    <div className='mb-3'>
+      <label htmlFor='exampleDataList' className='form-label'>
+        {label}
+      </label>
+      <input
+        list='datalistOptions'
+        autoComplete='off'
+        id='exampleDataList'
+        {...register(name, isRequired && { required: `${label} is required` })}
+        type='text'
+        placeholder={`Enter ${name}`}
+        className='form-control'
+      />
+      <datalist id='datalistOptions'>
+        <option value=''>-------------</option>
+        {data &&
+          data.map((d) => (
+            <option key={d._id} value={d._id}>
+              {name === 'student' ? d.rollNo : d.name}
+            </option>
+          ))}
+      </datalist>
+
       {errors && errors[name] && (
         <span className='text-danger'>{errors[name].message}</span>
       )}

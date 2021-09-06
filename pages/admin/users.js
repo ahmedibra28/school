@@ -15,10 +15,13 @@ import { Confirm } from '../../components/Confirm'
 import { useForm } from 'react-hook-form'
 import {
   dynamicInputSelect,
+  InputAutoCompleteSelect,
   inputEmail,
   inputPassword,
   inputText,
 } from '../../utils/dynamicForm'
+import { getAllStudents } from '../../api/student'
+import { getAllTeachers } from '../../api/teacher'
 
 const Users = () => {
   const [page, setPage] = useState(1)
@@ -44,6 +47,8 @@ const Users = () => {
   )
 
   const { data: groupData } = useQuery('groups', () => getGroups())
+  const { data: studentData } = useQuery('all-students', () => getAllStudents())
+  const { data: teacherData } = useQuery('all-teachers', () => getAllTeachers())
 
   const {
     isLoading: isLoadingUpdate,
@@ -106,6 +111,8 @@ const Users = () => {
           email: data.email,
           password: data.password,
           group: data.group,
+          student: data.student,
+          teacher: data.teacher,
         })
       : addMutateAsync(data)
   }
@@ -216,6 +223,24 @@ const Users = () => {
                     name: 'group',
                     label: 'Group',
                   })}
+
+                  {watch().group === 'student' &&
+                    InputAutoCompleteSelect({
+                      register,
+                      label: 'Student',
+                      errors,
+                      name: 'student',
+                      data: studentData,
+                    })}
+
+                  {watch().group === 'teacher' &&
+                    InputAutoCompleteSelect({
+                      register,
+                      label: 'Teacher',
+                      errors,
+                      name: 'teacher',
+                      data: teacherData,
+                    })}
 
                   <div className='modal-footer'>
                     <button
