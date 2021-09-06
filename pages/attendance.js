@@ -79,16 +79,12 @@ const Attendance = () => {
   const studentData = data && data.student
   const subjectName = data && data.subject
 
-  // console.log(data && data)
-
   const subjectData =
     classRoomData && classRoomData.filter((cl) => cl._id === watch().classRoom)
 
   const submitHandler = (data) => {
     classRoomFilterMutateAsync({
       classRoom: data.classRoom,
-      pTwelveSchool: data.pTwelveSchool,
-      branch: data.branch,
       subject: data.subject,
     })
   }
@@ -145,14 +141,18 @@ const Attendance = () => {
                   ),
               })}
           </div>
-          <div className='col-md-3 col-4'>
+          <div className='col-md-2 col-4'>
             {watch().classRoom &&
               dynamicInputSelect({
                 register,
                 label: 'Subject',
                 errors,
                 name: 'subject',
-                data: subjectData && subjectData.map((sub) => sub.subject[0]),
+                data:
+                  subjectData &&
+                  subjectData[0] &&
+                  subjectData[0].subject &&
+                  subjectData[0].subject,
               })}
           </div>
 
@@ -196,8 +196,9 @@ const Attendance = () => {
                   <th>ROLL NO. </th>
                   <th>STUDENT</th>
                   <th>BRANCH</th>
-                  <th>P12 SCHOOL</th>
+                  <th>CLASS ROOM</th>
                   <th>SUBJECT</th>
+                  <th>ATTEND</th>
                 </tr>
               </thead>
               <tbody>
@@ -215,12 +216,21 @@ const Attendance = () => {
                           student.branch.name.slice(1)}
                       </td>
                       <td>
-                        {student.pTwelveSchool.name.charAt(0).toUpperCase() +
-                          student.pTwelveSchool.name.slice(1)}
+                        {student.classRoom.name.charAt(0).toUpperCase() +
+                          student.classRoom.name.slice(1)}
                       </td>
                       <td>
                         {subjectName.name.charAt(0).toUpperCase() +
                           subjectName.name.slice(1)}
+                      </td>
+                      <td>
+                        {inputCheckBox({
+                          register,
+                          errors,
+                          // label: 'isActive',
+                          name: student._id,
+                          isRequired: false,
+                        })}
                       </td>
                     </tr>
                   ))}

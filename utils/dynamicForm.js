@@ -160,7 +160,7 @@ export const inputCheckBox = (args) => {
 
   return (
     <div className='mb-3'>
-      <div className='form-check'>
+      <div className='form-check form-switch'>
         <input
           className='form-check-input'
           type='checkbox'
@@ -190,7 +190,7 @@ export const inputMultipleCheckBox = (args) => {
         {data &&
           data.map((d) => (
             <div key={d._id} className='col-md-4 col-6'>
-              <div className='form-check'>
+              <div className='form-check form-switch'>
                 <input
                   {...register(
                     name,
