@@ -71,7 +71,9 @@ handler.post(async (req, res) => {
         branch: obj && obj[0] && obj[0].branch && obj[0].branch._id,
         pTwelveSchool:
           obj && obj[0] && obj[0].pTwelveSchool && obj[0].pTwelveSchool._id,
-        student: obj.map((std) => std.isActive && std._id),
+        student: obj.map(
+          (std) => std.isActive && { student: std._id, isAttended: false }
+        ),
       })
       if (createObj) {
         res.status(201).json(
@@ -80,7 +82,7 @@ handler.post(async (req, res) => {
             subject,
             createdAt: { $gte: startDate, $lt: endDate },
           })
-            .populate('student')
+            .populate('student.student')
             .populate('branch', 'name')
             .populate('subject', 'name')
             .populate('classRoom', 'name')
@@ -95,7 +97,7 @@ handler.post(async (req, res) => {
           subject,
           createdAt: { $gte: startDate, $lt: endDate },
         })
-          .populate('student')
+          .populate('student.student')
           .populate('branch', 'name')
           .populate('subject', 'name')
           .populate('classRoom', 'name')

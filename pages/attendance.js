@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState } from 'react'
 import Head from 'next/head'
 import dynamic from 'next/dynamic'
 import withAuth from '../HOC/withAuth'
@@ -12,7 +12,8 @@ import { useForm } from 'react-hook-form'
 import { getPTwelveSchools } from '../api/pTwelveSchool'
 import { getBranches } from '../api/branch'
 import { dynamicInputSelect, inputCheckBox } from '../utils/dynamicForm'
-import { getFilteredClasses } from '../api/attendance'
+import { getAttendances } from '../api/attendance'
+import { FaSave } from 'react-icons/fa'
 
 const Attendance = () => {
   const {
@@ -23,6 +24,8 @@ const Attendance = () => {
   } = useForm({
     defaultValues: {},
   })
+  const { register: registerAttendance, handleSubmit: handleSubmitAttendance } =
+    useForm({})
 
   const { data: classRoomData } = useQuery(
     'classRooms',
@@ -51,7 +54,7 @@ const Attendance = () => {
     isSuccess: isSuccessClassRoomFilter,
     mutateAsync: classRoomFilterMutateAsync,
     data,
-  } = useMutation(getFilteredClasses, {
+  } = useMutation(getAttendances, {
     retry: 0,
     onSuccess: () => {},
   })
@@ -64,6 +67,14 @@ const Attendance = () => {
       classRoom: data.classRoom,
       subject: data.subject,
     })
+  }
+
+  const submitHandlerAttendance = (data) => {
+    console.log(data)
+    // const ent = Object.entries(data)
+    // let a = []
+    // // console.log(ent.map(l => ('student': l[0], 'isAttended': l[1])))
+    // console.log(ent.map((e) => Object.assign({}, e)))
   }
 
   return (
@@ -162,7 +173,7 @@ const Attendance = () => {
       ) : isErrorClassRoomFilter ? (
         <Message variant='danger'>{errorClassRoomFilter}</Message>
       ) : (
-        <>
+        <form onSubmit={handleSubmitAttendance(submitHandlerAttendance)}>
           <div className='table-responsive '>
             <table className='table table-sm hover bordered striped caption-top '>
               <caption>
@@ -176,24 +187,29 @@ const Attendance = () => {
                   <th>CLASS ROOM</th>
                   <th>SUBJECT</th>
                   <th>ATTEND</th>
+                  <th>
+                    <button className='btn btn-primary btn-sm shadow'>
+                      <FaSave className='mb-1' />
+                    </button>
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {data &&
                   data.student &&
                   data.student.map((student) => (
-                    <tr key={student._id}>
-                      <td>{student.rollNo}</td>
-                      <td>{student.name}</td>
+                    <tr key={student.student && student.student._id}>
+                      <td>{student.student && student.student.rollNo}</td>
+                      <td>{student.student && student.student.name}</td>
                       <td>{data.branch && data.branch.name}</td>
                       <td>{data.classRoom && data.classRoom.name}</td>
                       <td>{data.subject && data.subject.name}</td>
                       <td>
                         {inputCheckBox({
-                          register,
+                          register: registerAttendance,
                           errors,
-                          label: 'Attend?',
-                          name: student._id,
+                          label: 'Is Attended?',
+                          name: student.student && student.student._id,
                           isRequired: false,
                         })}
                       </td>
@@ -202,7 +218,7 @@ const Attendance = () => {
               </tbody>
             </table>
           </div>
-        </>
+        </form>
       )}
     </div>
   )

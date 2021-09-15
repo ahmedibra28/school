@@ -10,9 +10,12 @@ const attendanceScheme = mongoose.Schema(
     isActive: { type: Boolean, default: true },
     student: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: Student,
-        required: true,
+        student: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: Student,
+          required: true,
+        },
+        isAttended: { type: Boolean, default: false },
       },
     ],
     branch: {
