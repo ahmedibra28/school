@@ -123,6 +123,8 @@ const Users = () => {
     setValue('name', user.name)
     setValue('email', user.email)
     setValue('group', user.group)
+    setValue('teacher', user.group === 'teacher' && user.teacher)
+    setValue('student', user.group === 'student' && user.student)
   }
 
   useEffect(() => {

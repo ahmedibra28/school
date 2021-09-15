@@ -3,7 +3,7 @@ import dbConnect from '../../../utils/db'
 import { isAuth } from '../../../utils/auth'
 import Student from '../../../models/Student'
 import Subject from '../../../models/Subject'
-import Teacher from '../../../models/Teacher'
+import AssignedSubject from '../../../models/AssignedSubject'
 
 const handler = nc()
 handler.use(isAuth)
@@ -16,12 +16,26 @@ handler.post(async (req, res) => {
   if (!teacher) {
     return res
       .status(400)
-      .send(`${req.user.name}, your are not a teacher of this classroom`)
+      .send(`${req.user.name}, your are not a teacher of this subject`)
   }
 
-  const teacherObj = await Teacher.findById(teacher)
+  const assigned = await AssignedSubject.find({
+    teacher,
+    classRoom,
+    isActive: true,
+  })
 
-  if (teacherObj && !teacherObj.subject.includes(subject)) {
+  const conceitedSubs = [].concat.apply(
+    [],
+    assigned.map((a) => a.subject)
+  )
+
+  const newConceitedSubString = conceitedSubs.map((con) => con.toString())
+
+  if (
+    conceitedSubs.length === 0 ||
+    !newConceitedSubString.includes(subject.toString())
+  ) {
     return res
       .status(400)
       .send(`${req.user.name}, your are not a teacher of this subject`)

@@ -56,7 +56,7 @@ const AssignedSubject = () => {
 
   const { data, isLoading, isError, error } = useQuery(
     'assignedSubjects',
-    () => getAssignedSubjects(teacherId && teacherId),
+    async () => await getAssignedSubjects(teacherId),
     {
       retry: 0,
     }
