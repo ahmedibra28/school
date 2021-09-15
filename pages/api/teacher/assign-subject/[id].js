@@ -24,9 +24,8 @@ handler.put(async (req, res) => {
   await dbConnect()
 
   const { isActive, pTwelveSchool, branch, classRoom, teacher } = req.body
-  const subject = !Array.isArray(req.body.subject)
-    ? req.body.subject.split(',')
-    : req.body.subject
+  const sub = req.body.subject
+  const subject = !Array.isArray(sub) ? sub.split(',') : sub
   const _id = req.query.id
 
   const obj = await AssignedSubject.findById(_id)
