@@ -1,48 +1,28 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Head from 'next/head'
 import dynamic from 'next/dynamic'
 import withAuth from '../HOC/withAuth'
 import Message from '../components/Message'
 import Loader from 'react-loader-spinner'
-import {
-  FaCheckCircle,
-  FaEdit,
-  FaPlus,
-  FaTimesCircle,
-  FaTrash,
-} from 'react-icons/fa'
 
 import { getClassRooms } from '../api/classRoom'
-import { useQuery, useMutation, useQueryClient } from 'react-query'
+import { useQuery, useMutation } from 'react-query'
 
-import { confirmAlert } from 'react-confirm-alert'
-import { Confirm } from '../components/Confirm'
 import { useForm } from 'react-hook-form'
 import { getPTwelveSchools } from '../api/pTwelveSchool'
 import { getBranches } from '../api/branch'
-import { getSubjects } from '../api/subject'
-import {
-  dynamicInputSelect,
-  inputCheckBox,
-  inputMultipleCheckBox,
-  inputNumber,
-  inputText,
-} from '../utils/dynamicForm'
+import { dynamicInputSelect, inputCheckBox } from '../utils/dynamicForm'
 import { getFilteredClasses } from '../api/attendance'
 
 const Attendance = () => {
   const {
     register,
     handleSubmit,
-    setValue,
     watch,
-    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {},
   })
-
-  const queryClient = useQueryClient()
 
   const { data: classRoomData } = useQuery(
     'classRooms',
@@ -75,9 +55,6 @@ const Attendance = () => {
     retry: 0,
     onSuccess: () => {},
   })
-
-  const studentData = data && data.student
-  const subjectName = data && data.subject
 
   const subjectData =
     classRoomData && classRoomData.filter((cl) => cl._id === watch().classRoom)
@@ -189,7 +166,7 @@ const Attendance = () => {
           <div className='table-responsive '>
             <table className='table table-sm hover bordered striped caption-top '>
               <caption>
-                {studentData && studentData.length} records were found
+                {data && data.student.length} records were found
               </caption>
               <thead>
                 <tr>
@@ -202,32 +179,20 @@ const Attendance = () => {
                 </tr>
               </thead>
               <tbody>
-                {studentData &&
-                  subjectName &&
-                  studentData.map((student) => (
+                {data &&
+                  data.student &&
+                  data.student.map((student) => (
                     <tr key={student._id}>
                       <td>{student.rollNo}</td>
-                      <td>
-                        {student.name.charAt(0).toUpperCase() +
-                          student.name.slice(1)}
-                      </td>
-                      <td>
-                        {student.branch.name.charAt(0).toUpperCase() +
-                          student.branch.name.slice(1)}
-                      </td>
-                      <td>
-                        {student.classRoom.name.charAt(0).toUpperCase() +
-                          student.classRoom.name.slice(1)}
-                      </td>
-                      <td>
-                        {subjectName.name.charAt(0).toUpperCase() +
-                          subjectName.name.slice(1)}
-                      </td>
+                      <td>{student.name}</td>
+                      <td>{data.branch && data.branch.name}</td>
+                      <td>{data.classRoom && data.classRoom.name}</td>
+                      <td>{data.subject && data.subject.name}</td>
                       <td>
                         {inputCheckBox({
                           register,
                           errors,
-                          // label: 'isActive',
+                          label: 'Attend?',
                           name: student._id,
                           isRequired: false,
                         })}

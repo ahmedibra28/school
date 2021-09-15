@@ -2,27 +2,37 @@ import mongoose from 'mongoose'
 import Subject from './Subject'
 import ClassRoom from './ClassRoom'
 import Student from './Student'
+import Branch from './Branch'
+import PTwelveSchool from './PTwelveSchool'
 
 const attendanceScheme = mongoose.Schema(
   {
     isActive: { type: Boolean, default: true },
-    subject: [
+    student: [
       {
-        subject: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: Subject,
-          required: true,
-        },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: Student,
+        required: true,
       },
     ],
-    class: {
+    branch: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: Branch,
+      required: true,
+    },
+    pTwelveSchool: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: PTwelveSchool,
+      required: true,
+    },
+    classRoom: {
       type: mongoose.Schema.Types.ObjectId,
       ref: ClassRoom,
       required: true,
     },
-    student: {
+    subject: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: Student,
+      ref: Subject,
       required: true,
     },
   },
