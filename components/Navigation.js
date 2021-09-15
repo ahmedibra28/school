@@ -63,8 +63,7 @@ const Navigation = () => {
             customLocalStorage().userAccessRoutes.route.map(
               (route) =>
                 route.isActive &&
-                route.menu === 'Normal' &&
-                route.name !== 'Home' && (
+                route.menu === 'Normal' && (
                   <li key={route._id} className='nav-item'>
                     <Link href={route.path}>
                       <a className='nav-link active' aria-current='page'>
