@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import Head from 'next/head'
 import dynamic from 'next/dynamic'
 import withAuth from '../HOC/withAuth'
@@ -12,7 +11,7 @@ import { useForm } from 'react-hook-form'
 import { getPTwelveSchools } from '../api/pTwelveSchool'
 import { getBranches } from '../api/branch'
 import { dynamicInputSelect, inputCheckBox } from '../utils/dynamicForm'
-import { getAttendances } from '../api/attendance'
+import { getAttendances, updateAttendance } from '../api/attendance'
 import { FaSave } from 'react-icons/fa'
 
 const Attendance = () => {
@@ -48,13 +47,24 @@ const Attendance = () => {
   })
 
   const {
-    isLoading: isLoadingClassRoomFilter,
-    isError: isErrorClassRoomFilter,
-    error: errorClassRoomFilter,
-    isSuccess: isSuccessClassRoomFilter,
-    mutateAsync: classRoomFilterMutateAsync,
+    isLoading: isLoadingPost,
+    isError: isErrorPost,
+    error: errorPost,
+    isSuccess: isSuccessPost,
+    mutateAsync: postMutateAsync,
     data,
   } = useMutation(getAttendances, {
+    retry: 0,
+    onSuccess: () => {},
+  })
+
+  const {
+    isLoading: isLoadingUpdate,
+    isError: isErrorUpdate,
+    error: errorUpdate,
+    isSuccess: isSuccessUpdate,
+    mutateAsync: updateMutateAsync,
+  } = useMutation(updateAttendance, {
     retry: 0,
     onSuccess: () => {},
   })
@@ -63,34 +73,35 @@ const Attendance = () => {
     classRoomData && classRoomData.filter((cl) => cl._id === watch().classRoom)
 
   const submitHandler = (data) => {
-    classRoomFilterMutateAsync({
+    postMutateAsync({
       classRoom: data.classRoom,
       subject: data.subject,
     })
   }
 
-  const submitHandlerAttendance = (data) => {
-    console.log(data)
-    // const ent = Object.entries(data)
-    // let a = []
-    // // console.log(ent.map(l => ('student': l[0], 'isAttended': l[1])))
-    // console.log(ent.map((e) => Object.assign({}, e)))
+  const submitHandlerAttendance = (attendance) => {
+    updateMutateAsync({ attendance, _id: data._id })
   }
 
   return (
     <div className='container'>
       <Head>
-        <title>Class Room</title>
-        <meta property='og:title' content='Class Room' key='title' />
+        <title>Attendance</title>
+        <meta property='og:title' content='Attendance' key='title' />
       </Head>
-      {isSuccessClassRoomFilter && (
+      {isSuccessPost && (
         <Message variant='success'>
           Student has been fetched successfully.
         </Message>
       )}
-      {isErrorClassRoomFilter && (
-        <Message variant='danger'>{errorClassRoomFilter}</Message>
+      {isErrorPost && <Message variant='danger'>{errorPost}</Message>}
+
+      {isSuccessUpdate && (
+        <Message variant='success'>
+          Student attendance has been updated successfully.
+        </Message>
       )}
+      {isErrorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
 
       <form onSubmit={handleSubmit(submitHandler)}>
         <div className='row'>
@@ -148,9 +159,9 @@ const Attendance = () => {
             <button
               type='submit'
               className='btn btn-primary btn-lg mt-2 form-control shadow'
-              disabled={isLoadingClassRoomFilter}
+              disabled={isLoadingPost}
             >
-              {isLoadingClassRoomFilter ? (
+              {isLoadingPost ? (
                 <span className='spinner-border spinner-border-sm' />
               ) : (
                 'Search'
@@ -160,7 +171,7 @@ const Attendance = () => {
         </div>
       </form>
 
-      {isLoadingClassRoomFilter ? (
+      {isLoadingPost ? (
         <div className='text-center'>
           <Loader
             type='ThreeDots'
@@ -170,54 +181,63 @@ const Attendance = () => {
             timeout={3000} //3 secs
           />
         </div>
-      ) : isErrorClassRoomFilter ? (
-        <Message variant='danger'>{errorClassRoomFilter}</Message>
+      ) : isErrorPost ? (
+        <Message variant='danger'>{errorPost}</Message>
       ) : (
         <form onSubmit={handleSubmitAttendance(submitHandlerAttendance)}>
-          <div className='table-responsive '>
-            <table className='table table-sm hover bordered striped caption-top '>
-              <caption>
-                {data && data.student.length} records were found
-              </caption>
-              <thead>
-                <tr>
-                  <th>ROLL NO. </th>
-                  <th>STUDENT</th>
-                  <th>BRANCH</th>
-                  <th>CLASS ROOM</th>
-                  <th>SUBJECT</th>
-                  <th>ATTEND</th>
-                  <th>
-                    <button className='btn btn-primary btn-sm shadow'>
-                      <FaSave className='mb-1' />
-                    </button>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {data &&
-                  data.student &&
-                  data.student.map((student) => (
-                    <tr key={student.student && student.student._id}>
-                      <td>{student.student && student.student.rollNo}</td>
-                      <td>{student.student && student.student.name}</td>
-                      <td>{data.branch && data.branch.name}</td>
-                      <td>{data.classRoom && data.classRoom.name}</td>
-                      <td>{data.subject && data.subject.name}</td>
-                      <td>
-                        {inputCheckBox({
-                          register: registerAttendance,
-                          errors,
-                          label: 'Is Attended?',
-                          name: student.student && student.student._id,
-                          isRequired: false,
-                        })}
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          </div>
+          {data && (
+            <div className='table-responsive '>
+              <table className='table table-sm hover bordered striped caption-top '>
+                <caption>
+                  {data && data.student.length} records were found
+                </caption>
+                <thead>
+                  <tr>
+                    <th>ROLL NO. </th>
+                    <th>STUDENT</th>
+                    <th>BRANCH</th>
+                    <th>CLASS ROOM</th>
+                    <th>SUBJECT</th>
+                    <th>ATTEND</th>
+                    <th>
+                      <button
+                        disabled={isLoadingUpdate}
+                        className='btn btn-primary btn-sm shadow'
+                      >
+                        {isLoadingUpdate ? (
+                          <span className='spinner-border spinner-border-sm' />
+                        ) : (
+                          <FaSave className='mb-1' />
+                        )}
+                      </button>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data &&
+                    data.student &&
+                    data.student.map((student) => (
+                      <tr key={student.student && student.student._id}>
+                        <td>{student.student && student.student.rollNo}</td>
+                        <td>{student.student && student.student.name}</td>
+                        <td>{data.branch && data.branch.name}</td>
+                        <td>{data.classRoom && data.classRoom.name}</td>
+                        <td>{data.subject && data.subject.name}</td>
+                        <td>
+                          {inputCheckBox({
+                            register: registerAttendance,
+                            errors,
+                            label: 'Is Attended?',
+                            name: student.student && student.student._id,
+                            isRequired: false,
+                          })}
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </form>
       )}
     </div>

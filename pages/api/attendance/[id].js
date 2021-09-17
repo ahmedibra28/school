@@ -9,46 +9,27 @@ handler.use(isAuth)
 handler.put(async (req, res) => {
   await dbConnect()
 
-  const { isActive, classRoom, subject, student } = req.body
   const _id = req.query.id
+  const entries = Object.entries(req.body)
 
   const obj = await Attendance.findById(_id)
 
-  if (obj) {
-    const exist = await Attendance.find({
-      _id: { $ne: _id },
-      classRoom,
-      subject,
-      student,
-      createdAt: Date.now(),
-    })
-    if (exist.length === 0) {
-      obj.classRoom = classRoom
-      obj.subject = subject
-      obj.student = student
-      obj.isActive = isActive
-      await obj.save()
+  if (obj && entries.length > 0) {
+    if (!obj.isActive)
+      return res.status(404).send('Todays attendance has already been taken')
 
-      res.json({ status: 'success' })
-    } else {
-      return res.status(400).send(`This ${subject} Attendance already exist`)
+    let elements = []
+
+    for (let i = 0; i < entries.length; i++) {
+      elements.push({ student: entries[i][0], isAttended: entries[i][1] })
     }
+
+    obj.student = elements
+    obj.isActive = false
+    const create = await obj.save()
+    create && res.json({ status: 'success' })
   } else {
     return res.status(404).send('Attendance not found')
-  }
-})
-
-handler.delete(async (req, res) => {
-  await dbConnect()
-
-  const _id = req.query.id
-  const obj = await Attendance.findById(_id)
-  if (!obj) {
-    return res.status(404).send('Attendance not found')
-  } else {
-    await obj.remove()
-
-    res.json({ status: 'success' })
   }
 })
 
