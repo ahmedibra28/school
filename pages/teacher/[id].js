@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Head from 'next/head'
 import Message from '../../components/Message'
 import Loader from 'react-loader-spinner'
@@ -30,7 +30,7 @@ import {
 import { getBranches } from '../../api/branch'
 import { useRouter } from 'next/router'
 import { getClassRooms } from '../../api/classRoom'
-import { customLocalStorage } from '../../utils/customLocalStorage'
+import SubPageAccess from '../../utils/SubPageAccess'
 
 const AssignedSubject = () => {
   const router = useRouter()
@@ -48,16 +48,7 @@ const AssignedSubject = () => {
     },
   })
 
-  useEffect(() => {
-    if (
-      (customLocalStorage() &&
-        customLocalStorage().userInfo &&
-        !customLocalStorage().userInfo.group) ||
-      customLocalStorage().userInfo.group !== 'admin'
-    ) {
-      router.push('/')
-    }
-  }, [router])
+  SubPageAccess()
 
   const queryClient = useQueryClient()
 
