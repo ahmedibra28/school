@@ -1,7 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Head from 'next/head'
-import dynamic from 'next/dynamic'
-import withAuth from '../../HOC/withAuth'
 import Message from '../../components/Message'
 import Loader from 'react-loader-spinner'
 import {
@@ -24,17 +22,15 @@ import { confirmAlert } from 'react-confirm-alert'
 import { Confirm } from '../../components/Confirm'
 import { useForm } from 'react-hook-form'
 import { getPTwelveSchools } from '../../api/pTwelveSchool'
-import { getSubjects } from '../../api/subject'
 import {
   dynamicInputSelect,
   inputCheckBox,
   inputMultipleCheckBox,
-  inputNumber,
-  inputText,
 } from '../../utils/dynamicForm'
 import { getBranches } from '../../api/branch'
 import { useRouter } from 'next/router'
 import { getClassRooms } from '../../api/classRoom'
+import { customLocalStorage } from '../../utils/customLocalStorage'
 
 const AssignedSubject = () => {
   const router = useRouter()
@@ -51,6 +47,17 @@ const AssignedSubject = () => {
       isActive: true,
     },
   })
+
+  useEffect(() => {
+    if (
+      (customLocalStorage() &&
+        customLocalStorage().userInfo &&
+        !customLocalStorage().userInfo.group) ||
+      customLocalStorage().userInfo.group !== 'admin'
+    ) {
+      router.push('/')
+    }
+  }, [router])
 
   const queryClient = useQueryClient()
 
@@ -429,9 +436,5 @@ const AssignedSubject = () => {
     </div>
   )
 }
-
-// export default dynamic(() => Promise.resolve(withAuth(AssignedSubject)), {
-//   ssr: false,
-// })
 
 export default AssignedSubject
