@@ -5,16 +5,13 @@ import { customLocalStorage } from './customLocalStorage'
 const SubPageAccess = () => {
   const router = useRouter()
 
+  const group = customLocalStorage() && customLocalStorage().userInfo
+
   return useEffect(() => {
-    if (
-      (customLocalStorage() &&
-        customLocalStorage().userInfo &&
-        !customLocalStorage().userInfo.group) ||
-      customLocalStorage().userInfo.group !== 'admin'
-    ) {
+    if (!group || (group && group.group !== 'admin')) {
       router.push('/')
     }
-  }, [router])
+  }, [router, group])
 }
 
 export default SubPageAccess
