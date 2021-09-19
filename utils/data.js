@@ -2,7 +2,7 @@ export const routes = () => {
   return [
     {
       isActive: true,
-      menu: 'Normal',
+      menu: 'Hidden',
       path: '/',
       name: 'Home',
     },
@@ -45,8 +45,8 @@ export const routes = () => {
     {
       isActive: true,
       menu: 'Admin',
-      path: '/admin/pTwelveSchool',
-      name: 'P12 School',
+      path: '/admin/ptwelveschool',
+      name: 'P Twelve School',
     },
     {
       isActive: true,
@@ -101,6 +101,12 @@ export const routes = () => {
       menu: 'Normal',
       path: '/document',
       name: 'Document',
+    },
+    {
+      isActive: true,
+      menu: 'Report',
+      path: '/report/attendance',
+      name: 'Attendance Report',
     },
   ]
 }
